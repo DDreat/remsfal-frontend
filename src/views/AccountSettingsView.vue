@@ -3,6 +3,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useUserSessionStore } from '@/stores/UserSession';
 import { useI18n } from 'vue-i18n';
+import Select from 'primevue/select';
 import Button from 'primevue/button';
 import Card from 'primevue/card';
 import Dialog from 'primevue/dialog';
@@ -13,6 +14,8 @@ import UserService from '@/services/UserService';
 import { RouterLink } from 'vue-router'
 
 const { t } = useI18n();
+
+const i18n = useI18n();
 
 type UserGetResponse = paths['/api/v1/user']['get']['responses'][200]['content']['application/json'];
 type UserPatchRequestBody = paths['/api/v1/user']['patch']['requestBody']['content']['application/json'];
@@ -462,6 +465,27 @@ const isDisabled = computed(() => {
                   {{ errorMessage.privatePhoneNumber }}
                 </Message>
               </div>
+
+              
+              <div class="p-link layout-topbar-button">
+                <Select v-model="i18n.locale" :options="i18n.availableLocales">
+                  <template #value="slotProps">
+                    <img
+                    :alt="slotProps.value"
+                    style="width: 18px"
+                    :src="`/src/assets/flags/${slotProps.value}.png`"
+                    >
+                  </template>
+                  <template #option="slotProps">
+                    <img
+                    :alt="slotProps.option"
+                    style="width: 18px"
+                    :src="`/src/assets/flags/${slotProps.option}.png`"
+                    >
+                  </template>
+                </Select>
+              </div>
+
             </div>
             <Message class="required" size="small" severity="secondary" variant="simple">
               {{ t('accountSettings.userProfile.requiredFields') }}
